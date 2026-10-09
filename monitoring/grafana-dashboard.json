@@ -1,0 +1,90 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 1,
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "type": "stat",
+      "title": "CampusFix Web Health Status",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "up{job=\"campusfix-web\"}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "options": { "0": { "text": "DOWN", "color": "red" }, "1": { "text": "UP", "color": "green" } }, "type": "value" }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }] }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "type": "stat",
+      "title": "Total Complaints Submitted",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "campusfix_complaints_total",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 0 },
+      "type": "timeseries",
+      "title": "HTTP Request Rate (req/sec)",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(flask_http_request_total[1m]))",
+          "legendFormat": "Requests / Sec",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 6 },
+      "type": "timeseries",
+      "title": "Request Duration Latency (p95)",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "histogram_quantile(0.95, sum(rate(flask_http_request_duration_seconds_bucket[1m])) by (le))",
+          "legendFormat": "p95 Latency",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["campusfix", "devops"],
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "CampusFix DevOps Monitoring Dashboard",
+  "version": 1
+}

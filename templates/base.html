@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CampusFix - College Issue Tracker{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">🛠️ CampusFix</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    {% if session.get('user_id') %}
+                        <li class="nav-item">
+                            <span class="nav-link text-white-50">Logged in as: <strong class="text-white">{{ session.get('username') }} ({{ session.get('role') }})</strong></span>
+                        </li>
+                        {% if session.get('role') == 'admin' %}
+                            <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('complaints') }}">My Complaints</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a class="nav-link text-warning" href="/health" target="_blank">Health Status</a></li>
+                        <li class="nav-item"><a class="nav-link text-warning" href="/metrics" target="_blank">Metrics</a></li>
+                        <li class="nav-item ms-lg-2"><a class="btn btn-outline-light btn-sm" href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login') }}">Login</a></li>
+                        <li class="nav-item"><a class="btn btn-light btn-sm text-primary ms-lg-2" href="{{ url_for('register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4 flex-grow-1">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-white border-top py-3 mt-auto text-center text-muted">
+        <div class="container small">
+            CampusFix DevOps Project &bull; Flask + PostgreSQL + Docker Compose + Jenkins + Prometheus & Grafana
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

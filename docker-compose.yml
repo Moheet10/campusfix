@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # Database Service (PostgreSQL)
+  # ==========================================
+  db:
+    image: postgres:15-alpine
+    container_name: campusfix-db
+    restart: always
+    environment:
+      POSTGRES_USER: campusfix
+      POSTGRES_PASSWORD: campusfix123
+      POSTGRES_DB: campusfix_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campusfix -d campusfix_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - campusfix-network
+
+  # ==========================================
+  # Web Application Service (Flask + Gunicorn)
+  # ==========================================
+  web:
+    build:
+      context: .
+      target: runner
+    container_name: campusfix-web
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://campusfix:campusfix123@db:5432/campusfix_db
+      SECRET_KEY: super-secret-campusfix-key
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - campusfix-network
+
+  # ==========================================
+  # Monitoring: Prometheus Metrics Collector
+  # ==========================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: campusfix-prometheus
+    restart: always
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - campusfix-network
+
+  # ==========================================
+  # Monitoring: Grafana Visualization Dashboard
+  # ==========================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: campusfix-grafana
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - campusfix-network
+
+volumes:
+  postgres_data:
+  grafana_data:
+
+networks:
+  campusfix-network:
+    driver: bridge
