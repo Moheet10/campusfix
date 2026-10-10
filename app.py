@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from flask_sqlalchemy import SQLAlchemy
 from prometheus_flask_exporter import PrometheusMetrics
 from prometheus_client import Counter
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "campusfix-super-secret-key-2026")
@@ -33,7 +34,7 @@ class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), default="student")  # 'student' or 'admin'
     complaints = db.relationship("Complaint", backref="author", lazy=True)
 
@@ -53,11 +54,11 @@ def init_db():
         db.create_all()
         # Seed default admin if not exists
         if not User.query.filter_by(username="admin").first():
-            admin_user = User(username="admin", password="admin123", role="admin")
+            admin_user = User(username="admin", password=generate_password_hash("admin123"), role="admin")
             db.session.add(admin_user)
         # Seed default student if not exists
         if not User.query.filter_by(username="student1").first():
-            student = User(username="student1", password="password123", role="student")
+            student = User(username="student1", password=generate_password_hash("password123"), role="student")
             db.session.add(student)
             db.session.commit()
             
@@ -72,6 +73,8 @@ def init_db():
             db.session.add(sample_complaint)
         db.session.commit()
 
+init_db()
+
 # ----------------- Application Routes -----------------
 
 @app.route("/")
@@ -85,7 +88,7 @@ def register():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
-        role = request.form.get("role", "student")
+        role = "student"  # was: request.form.get("role", "student")
 
         if not username or not password:
             flash("Username and password are required.", "danger")
@@ -95,7 +98,7 @@ def register():
             flash("Username already exists. Please pick another.", "warning")
             return redirect(url_for("register"))
 
-        new_user = User(username=username, password=password, role=role)
+        new_user = User(username=username, password=generate_password_hash(password), role=role)
         db.session.add(new_user)
         db.session.commit()
         flash("Registration successful! You can now log in.", "success")
@@ -109,8 +112,8 @@ def login():
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
 
-        user = User.query.filter_by(username=username, password=password).first()
-        if user:
+        user = User.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password, password):
             session["user_id"] = user.id
             session["username"] = user.username
             session["role"] = user.role

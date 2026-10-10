@@ -1,4 +1,4 @@
-version: '3.8'
+name: campusfix
 
 services:
   # ==========================================
@@ -47,6 +47,17 @@ services:
       interval: 15s
       timeout: 5s
       retries: 3
+    networks:
+      - campusfix-network
+
+  # ==========================================
+  # Node Exporter (Server Metrics for Exp 7)
+  # ==========================================
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: campusfix-node-exporter
+    ports:
+      - "9100:9100"
     networks:
       - campusfix-network
 

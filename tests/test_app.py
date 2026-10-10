@@ -108,3 +108,18 @@ def test_admin_access_control_and_status_update(client):
     }, follow_redirects=True)
     assert update_response.status_code == 200
     assert b"status updated to Resolved" in update_response.data
+
+def test_register_role_escalation_prevented(client):
+    """Test 11: POST /register with role=admin must create a student, not an admin."""
+    from app import app, User
+    response = client.post("/register", data={
+        "username": "sneaky_user",
+        "password": "secretpassword123",
+        "role": "admin"
+    }, follow_redirects=True)
+    assert response.status_code == 200
+
+    with app.app_context():
+        user = User.query.filter_by(username="sneaky_user").first()
+        assert user is not None
+        assert user.role == "student"

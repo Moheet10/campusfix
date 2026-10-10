@@ -1,4 +1,5 @@
 import pytest
+from werkzeug.security import generate_password_hash
 from app import app, db, User, Complaint
 
 @pytest.fixture(autouse=True)
@@ -12,8 +13,8 @@ def clean_db():
         db.session.commit()
 
         # Seed test admin & student
-        admin = User(username="admin_test", password="adminpassword", role="admin")
-        student = User(username="student_test", password="studentpassword", role="student")
+        admin = User(username="admin_test", password=generate_password_hash("adminpassword"), role="admin")
+        student = User(username="student_test", password=generate_password_hash("studentpassword"), role="student")
         db.session.add(admin)
         db.session.add(student)
         db.session.commit()

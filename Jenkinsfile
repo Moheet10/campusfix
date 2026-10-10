@@ -16,9 +16,17 @@ pipeline {
 
         stage('2. Build Test Container & Execute Pytests') {
             steps {
-                echo 'Building test container and executing 10 unit tests...'
+                echo 'Building test container and executing unit tests...'
                 sh 'docker build --target tester -t campusfix-tester .'
-                sh 'docker run --rm -v $(pwd):/app/reports campusfix-tester pytest -v --junitxml=/app/reports/junit-report.xml'
+                sh '''
+                    docker rm -f cf-test >/dev/null 2>&1 || true
+                    set +e
+                    docker run --name cf-test campusfix-tester pytest -v --junitxml=/tmp/junit-report.xml
+                    rc=$?
+                    docker cp cf-test:/tmp/junit-report.xml junit-report.xml
+                    docker rm -f cf-test >/dev/null 2>&1
+                    exit $rc
+                '''
             }
             post {
                 always {
@@ -46,7 +54,7 @@ pipeline {
                 echo 'Waiting for application to warm up and verifying /health endpoint...'
                 sh '''
                     for i in 1 2 3 4 5; do
-                        STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/health || true)
+                        STATUS=$(docker exec campusfix-web curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/health || true)
                         if [ "$STATUS" = "200" ]; then
                             echo "Application healthy and smoke test passed with HTTP 200!"
                             exit 0
