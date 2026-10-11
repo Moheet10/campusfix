@@ -2,7 +2,7 @@ name: CampusFix DevOps CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feature/**", "docs/**" ]
     tags:
       - "v*"
   pull_request:
