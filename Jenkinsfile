@@ -1,3 +1,8 @@
+// =============================================================================
+// CampusFix Declarative CI/CD Pipeline
+// Lead Infrastructure Automation: Ronak Duseja (@ronak05duseja)
+// Verified on Jenkins 2.440+ & Docker-in-Docker Engine
+// =============================================================================
 pipeline {
     agent any
 
