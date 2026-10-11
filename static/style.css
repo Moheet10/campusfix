@@ -1,29 +1,36 @@
 /* ==========================================================================
-   CampusFix - ReactBits-Inspired Modern Dark Glassmorphic Design System
+   CampusFix - Crystallize & Prism Tokyo High-End Aesthetic
+   Inspired by https://crystallize.prism-on.tokyo/
+   Deep Crystalline Sapphire, Refractive Glassmorphism, Geometric Accents
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-    --bg-dark: #080c14;
-    --bg-card: rgba(15, 23, 42, 0.65);
-    --bg-card-hover: rgba(24, 36, 64, 0.75);
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(99, 102, 241, 0.35);
+    --bg-deep: #060a14;
+    --bg-crystal-1: #0a1124;
+    --bg-crystal-2: #142247;
+    --bg-prism-blue: #2f4488;
     
-    --primary: #6366f1;
-    --primary-glow: rgba(99, 102, 241, 0.4);
-    --accent-cyan: #06b6d4;
-    --accent-violet: #8b5cf6;
-    --accent-emerald: #10b981;
-    --accent-rose: #f43f5e;
-    --accent-amber: #f59e0b;
+    --card-surface: rgba(13, 23, 48, 0.65);
+    --card-surface-hover: rgba(22, 38, 80, 0.75);
+    --card-border: rgba(147, 197, 253, 0.15);
+    --card-border-glow: rgba(56, 189, 248, 0.45);
+    
+    --prism-cyan: #38bdf8;
+    --prism-indigo: #818cf8;
+    --prism-violet: #c084fc;
+    --prism-emerald: #34d399;
+    --prism-rose: #fb7185;
+    --prism-amber: #fbbf24;
 
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
+    --text-pure: #ffffff;
+    --text-ice: #e0f2fe;
+    --text-muted: #93c5fd;
     --text-dim: #64748b;
 
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: 'Space Grotesk', var(--font-sans);
     --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -32,98 +39,69 @@
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
+    background-color: var(--bg-deep);
+    color: var(--text-ice);
     font-family: var(--font-sans);
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
     background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(47, 68, 136, 0.45) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 90% 90%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
+        linear-gradient(180deg, #070c18 0%, #0a1122 50%, #060a14 100%);
+    background-attachment: fixed;
 }
 
 /* ==========================================================================
-   Aurora Background Blobs (ReactBits Aurora Effect)
+   Crystalline Interactive Canvas & Ambient Shimmer
    ========================================================================== */
-.aurora-container {
+#crystal-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    z-index: -1;
     pointer-events: none;
+    z-index: 0;
+    opacity: 0.75;
 }
 
-.aurora-blob {
-    position: absolute;
-    filter: blur(100px);
-    opacity: 0.45;
-    border-radius: 50%;
-    animation: aurora-drift 20s infinite alternate ease-in-out;
-}
-
-.aurora-blob-1 {
-    width: 500px;
-    height: 500px;
-    background: linear-gradient(135deg, #4f46e5, #06b6d4);
-    top: -100px;
-    left: 15%;
-    animation-duration: 18s;
-}
-
-.aurora-blob-2 {
-    width: 450px;
-    height: 450px;
-    background: linear-gradient(135deg, #8b5cf6, #ec4899);
-    bottom: 5%;
-    right: 10%;
-    animation-duration: 24s;
-    animation-direction: alternate-reverse;
-}
-
-.aurora-blob-3 {
-    width: 350px;
-    height: 350px;
-    background: linear-gradient(135deg, #0ea5e9, #10b981);
-    top: 40%;
-    left: 60%;
-    animation-duration: 22s;
-}
-
-@keyframes aurora-drift {
-    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    50% { transform: translate(40px, -50px) scale(1.1) rotate(90deg); }
-    100% { transform: translate(-30px, 40px) scale(0.95) rotate(180deg); }
-}
-
-/* Grid overlay pattern */
-.bg-grid-pattern {
+.prism-vignette {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-    background-size: 32px 32px;
-    z-index: -1;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(6, 10, 20, 0.8) 100%);
     pointer-events: none;
+    z-index: 1;
+}
+
+/* Geometric Grid Background */
+.geometric-grid {
+    position: fixed;
+    inset: 0;
+    background-image: 
+        linear-gradient(to right, rgba(147, 197, 253, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(147, 197, 253, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* ==========================================================================
-   ReactBits Spotlight Cards
+   Prism Glass Cards (Spotlight + Refraction)
    ========================================================================== */
 .spotlight-card {
     position: relative;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 16px;
+    background: var(--card-surface);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 18px;
     overflow: hidden;
-    transition: transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 2;
 }
 
 .spotlight-card::before {
@@ -131,8 +109,8 @@ body {
     position: absolute;
     inset: 0;
     background: radial-gradient(
-        500px circle at var(--mouse-x, -200px) var(--mouse-y, -200px),
-        rgba(99, 102, 241, 0.16),
+        550px circle at var(--mouse-x, -200px) var(--mouse-y, -200px),
+        rgba(56, 189, 248, 0.18),
         transparent 70%
     );
     opacity: 0;
@@ -142,49 +120,56 @@ body {
 }
 
 .spotlight-card:hover {
-    border-color: rgba(99, 102, 241, 0.4);
-    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(99, 102, 241, 0.2);
+    border-color: var(--card-border-glow);
+    box-shadow: 
+        0 15px 40px -10px rgba(7, 12, 24, 0.8),
+        0 0 25px -5px rgba(56, 189, 248, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .spotlight-card:hover::before {
     opacity: 1;
 }
 
-/* 3D Tilt Card */
+/* 3D Perspective Tilt Card */
 .tilt-card {
-    transition: transform 0.15s ease-out, box-shadow 0.25s ease;
+    transition: transform 0.18s ease-out, box-shadow 0.25s ease;
     transform-style: preserve-3d;
 }
 
 /* ==========================================================================
-   Navigation Bar (Glassmorphic)
+   Crystallize Navigation Bar
    ========================================================================== */
 .glass-nav {
-    background: rgba(8, 12, 20, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-color);
+    background: rgba(8, 14, 28, 0.82);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(147, 197, 253, 0.12);
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
 }
 
 .navbar-brand-gradient {
-    font-weight: 800;
+    font-family: var(--font-heading);
+    font-weight: 700;
     font-size: 1.35rem;
-    background: linear-gradient(135deg, #ffffff 30%, #818cf8 100%);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #ffffff 40%, #93c5fd 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -0.5px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .nav-link {
     color: var(--text-muted) !important;
     font-weight: 500;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
     transition: color 0.2s ease;
     padding: 0.5rem 0.9rem !important;
 }
@@ -193,24 +178,26 @@ body {
     color: #ffffff !important;
 }
 
-/* Live Telemetry Ping indicator */
+/* Telemetry Radar Ping */
 .live-indicator {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 3px 10px;
+    gap: 8px;
+    padding: 4px 12px;
     border-radius: 999px;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-family: var(--font-mono);
-    background: rgba(16, 185, 129, 0.12);
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    color: #34d399;
+    letter-spacing: 0.06em;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    color: #38bdf8;
+    backdrop-filter: blur(10px);
 }
 
 .live-indicator .ping-dot {
-    width: 7px;
-    height: 7px;
-    background-color: #10b981;
+    width: 6px;
+    height: 6px;
+    background-color: #38bdf8;
     border-radius: 50%;
     position: relative;
 }
@@ -220,123 +207,147 @@ body {
     position: absolute;
     inset: -3px;
     border-radius: 50%;
-    background-color: #10b981;
+    background-color: #38bdf8;
     opacity: 0.75;
-    animation: ping-pulse 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+    animation: crystal-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-@keyframes ping-pulse {
+@keyframes crystal-ping {
     0% { transform: scale(1); opacity: 0.8; }
-    75%, 100% { transform: scale(2.4); opacity: 0; }
+    75%, 100% { transform: scale(2.8); opacity: 0; }
 }
 
 /* ==========================================================================
-   Typography & Accents
+   Typography & Crystalline Headers
    ========================================================================== */
-.gradient-heading {
-    background: linear-gradient(135deg, #ffffff 20%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -0.03em;
-}
-
-.hero-highlight {
-    background: linear-gradient(135deg, #818cf8, #06b6d4);
+.crystal-title {
+    font-family: var(--font-heading);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 40%, #bae6fd 75%, #818cf8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* Buttons with ReactBits Glow */
-.btn-glow-primary {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
+.crystal-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    padding: 4px 12px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Faceted Crystalline Buttons */
+.btn-crystal-primary, .btn-glow-primary {
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-family: var(--font-heading);
     font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
     border-radius: 10px;
-    padding: 0.65rem 1.4rem;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
-    transition: all 0.25s ease;
+    padding: 0.75rem 1.6rem;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
 }
 
-.btn-glow-primary:hover {
+.btn-crystal-primary:hover, .btn-glow-primary:hover {
     color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.55);
+    box-shadow: 0 8px 30px rgba(56, 189, 248, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
-.btn-glow-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    color: #f1f5f9;
-    border: 1px solid var(--border-color);
-    backdrop-filter: blur(10px);
+.btn-crystal-secondary, .btn-glow-secondary {
+    background: rgba(255, 255, 255, 0.04);
+    color: #e0f2fe;
+    border: 1px solid rgba(147, 197, 253, 0.18);
+    backdrop-filter: blur(12px);
+    font-family: var(--font-heading);
     font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
     border-radius: 10px;
-    padding: 0.65rem 1.4rem;
+    padding: 0.75rem 1.6rem;
     transition: all 0.25s ease;
 }
 
-.btn-glow-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
+.btn-crystal-secondary:hover {
+    background: rgba(255, 255, 255, 0.09);
     color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(147, 197, 253, 0.45);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* ==========================================================================
-   Forms & Inputs
+   Inputs & Forms
    ========================================================================== */
 .form-control, .form-select {
-    background-color: rgba(15, 23, 42, 0.8) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #f8fafc !important;
+    background-color: rgba(10, 18, 38, 0.85) !important;
+    border: 1px solid rgba(147, 197, 253, 0.15) !important;
+    color: #f0f9ff !important;
     border-radius: 10px !important;
-    padding: 0.65rem 0.9rem !important;
+    padding: 0.75rem 1rem !important;
     font-size: 0.95rem;
     transition: all 0.2s ease;
 }
 
 .form-control:focus, .form-select:focus {
-    background-color: rgba(15, 23, 42, 0.95) !important;
-    border-color: #6366f1 !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+    background-color: rgba(13, 23, 48, 0.95) !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25) !important;
     color: #ffffff !important;
 }
 
 .form-control::placeholder {
-    color: #64748b;
+    color: #475569;
 }
 
 .form-label {
     color: #cbd5e1;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     margin-bottom: 0.4rem;
 }
 
 /* ==========================================================================
-   Tables & Badges
+   Tables & Prism Status Badges
    ========================================================================== */
 .custom-table {
-    color: #e2e8f0;
+    color: #e0f2fe;
     margin-bottom: 0;
 }
 
 .custom-table thead th {
-    background-color: rgba(255, 255, 255, 0.03);
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-dim);
-    font-size: 0.78rem;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(147, 197, 253, 0.1);
+    color: #94a3b8;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     font-weight: 700;
-    padding: 1rem 1.25rem;
+    padding: 1.1rem 1.25rem;
 }
 
 .custom-table tbody td {
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid rgba(147, 197, 253, 0.05);
     vertical-align: middle;
 }
 
@@ -345,101 +356,90 @@ body {
 }
 
 .custom-table tbody tr:hover {
-    background-color: rgba(99, 102, 241, 0.06);
+    background-color: rgba(56, 189, 248, 0.05);
 }
 
-/* Modern Status Badges */
+/* Status Badges */
 .badge-status {
     padding: 0.35rem 0.85rem;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
     font-weight: 600;
     border-radius: 999px;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
 
 .badge-status-open {
-    background: rgba(244, 63, 94, 0.12);
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: rgba(251, 113, 133, 0.12);
+    border: 1px solid rgba(251, 113, 133, 0.3);
     color: #fda4af;
 }
 
 .badge-status-progress {
-    background: rgba(245, 158, 11, 0.12);
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.3);
     color: #fde047;
 }
 
 .badge-status-resolved {
-    background: rgba(16, 185, 129, 0.12);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: rgba(52, 211, 153, 0.12);
+    border: 1px solid rgba(52, 211, 153, 0.3);
     color: #6ee7b7;
 }
 
 .badge-category {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #cbd5e1;
-    padding: 0.25rem 0.7rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(147, 197, 253, 0.12);
+    color: #93c5fd;
+    padding: 0.3rem 0.75rem;
     border-radius: 6px;
-    font-size: 0.78rem;
-    font-weight: 500;
+    font-size: 0.76rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
 }
 
-/* Category Filter Pills */
+/* Filter Pills */
 .filter-pill {
-    padding: 0.35rem 0.9rem;
-    font-size: 0.82rem;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     font-weight: 600;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(147, 197, 253, 0.12);
+    color: #94a3b8;
     cursor: pointer;
     transition: all 0.2s ease;
     user-select: none;
 }
 
 .filter-pill:hover, .filter-pill.active {
-    background: rgba(99, 102, 241, 0.2);
-    border-color: #6366f1;
+    background: rgba(56, 189, 248, 0.18);
+    border-color: #38bdf8;
     color: #ffffff;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
 }
 
-/* ==========================================================================
-   Click Spark Particle Effect (ReactBits ClickSpark)
-   ========================================================================== */
+/* Click Spark Particles */
 .spark-particle {
     position: fixed;
     pointer-events: none;
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #818cf8, #06b6d4);
+    background: linear-gradient(135deg, #38bdf8, #c084fc);
+    box-shadow: 0 0 8px #38bdf8;
     z-index: 9999;
-    animation: spark-fade 0.7s forwards ease-out;
+    animation: crystal-spark 0.65s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@keyframes spark-fade {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(var(--dx), var(--dy)) scale(0);
-        opacity: 0;
-    }
-}
-
-/* Code Snippet Pill */
-.code-pill {
-    background: rgba(15, 23, 42, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: #38bdf8;
-    padding: 0.2rem 0.6rem;
-    border-radius: 6px;
+@keyframes crystal-spark {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
 }

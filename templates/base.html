@@ -3,84 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}CampusFix &bull; Autonomous DevOps Campus Grievance Platform{% endblock %}</title>
+    <title>{% block title %}CampusFix &bull; Autonomous DevOps Platform{% endblock %}</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Custom ReactBits Design System -->
+    <!-- Crystallize / Prism Tokyo Design System -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <!-- Aurora Animated Background Blobs -->
-    <div class="aurora-container">
-        <div class="aurora-blob aurora-blob-1"></div>
-        <div class="aurora-blob aurora-blob-2"></div>
-        <div class="aurora-blob aurora-blob-3"></div>
-    </div>
-    <div class="bg-grid-pattern"></div>
+    <!-- Interactive Canvas & Geometric Prism Layers -->
+    <canvas id="crystal-canvas"></canvas>
+    <div class="geometric-grid"></div>
+    <div class="prism-vignette"></div>
 
     <!-- Glassmorphic Navbar -->
     <nav class="navbar navbar-expand-lg glass-nav py-3">
-        <div class="container">
+        <div class="container position-relative" style="z-index: 10;">
             <a class="navbar-brand navbar-brand-gradient" href="/">
-                <i class="bi bi-shield-check text-primary"></i> CampusFix
+                <svg width="22" height="22" viewBox="-120 -120 240 240" fill="currentColor" class="text-info me-1">
+                    <polygon points="0,-100 86,-50 86,50 0,100 -86,50 -86,-50" fill="none" stroke="#38bdf8" stroke-width="12"/>
+                    <line x1="0" y1="-100" x2="0" y2="100" stroke="#93c5fd" stroke-width="8"/>
+                    <line x1="-86" y1="-50" x2="86" y2="50" stroke="#93c5fd" stroke-width="8"/>
+                    <line x1="-86" y1="50" x2="86" y2="-50" stroke="#93c5fd" stroke-width="8"/>
+                </svg>
+                CampusFix
             </a>
             <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                <i class="bi bi-list fs-3"></i>
+                <i class="bi bi-list fs-3 text-info"></i>
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav ms-auto align-items-center gap-lg-2 mt-3 mt-lg-0">
+                <ul class="navbar-nav ms-auto align-items-center gap-lg-3 mt-3 mt-lg-0">
                     {% if session.get('user_id') %}
                         <li class="nav-item">
                             <span class="nav-link">
-                                <i class="bi bi-person-circle me-1 text-primary"></i>
-                                <strong class="text-white">{{ session.get('username') }}</strong>
-                                <span class="badge bg-secondary ms-1 text-uppercase" style="font-size: 0.65rem;">{{ session.get('role') }}</span>
+                                <i class="bi bi-person text-info me-1"></i>
+                                <strong class="text-white font-monospace">{{ session.get('username') }}</strong>
+                                <span class="badge-category ms-1">[{{ session.get('role') }}]</span>
                             </span>
                         </li>
                         {% if session.get('role') == 'admin' %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
-                                    <i class="bi bi-speedometer2 me-1"></i> Admin Dashboard
+                                    <i class="bi bi-grid-1x2 me-1"></i> Operations
                                 </a>
                             </li>
                         {% else %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('complaints') }}">
-                                    <i class="bi bi-card-checklist me-1"></i> My Complaints
+                                    <i class="bi bi-layers me-1"></i> Grievances
                                 </a>
                             </li>
                         {% endif %}
                         <li class="nav-item">
-                            <a class="live-indicator text-decoration-none" href="/health" target="_blank" title="Live Health Probe">
-                                <span class="ping-dot"></span> Health: 200 OK
+                            <a class="live-indicator text-decoration-none" href="/health" target="_blank" title="Database Liveness Probe">
+                                <span class="ping-dot"></span> PROBE // 200 OK
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-warning" href="/metrics" target="_blank" title="Prometheus Scrape Endpoint">
-                                <i class="bi bi-activity me-1"></i> /metrics
+                            <a class="nav-link" href="/metrics" target="_blank" title="Prometheus Scrape Endpoint" style="color: #38bdf8 !important;">
+                                <i class="bi bi-broadcast-pin me-1"></i> /metrics
                             </a>
                         </li>
                         <li class="nav-item ms-lg-2">
-                            <a class="btn btn-outline-danger btn-sm rounded-pill px-3" href="{{ url_for('logout') }}">
-                                <i class="bi bi-box-arrow-right me-1"></i> Logout
+                            <a class="btn btn-outline-danger btn-sm rounded-pill px-3" href="{{ url_for('logout') }}" style="font-size: 0.78rem; font-family: var(--font-mono);">
+                                DISCONNECT
                             </a>
                         </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="live-indicator text-decoration-none me-lg-2" href="/health" target="_blank">
-                                <span class="ping-dot"></span> Cluster Online
+                                <span class="ping-dot"></span> TELEMETRY // ACTIVE
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('login') }}">
-                                <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                                SIGN IN
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-glow-primary btn-sm ms-lg-2" href="{{ url_for('register') }}">
-                                <i class="bi bi-person-plus me-1"></i> Get Started
+                            <a class="btn btn-crystal-primary ms-lg-2" href="{{ url_for('register') }}">
+                                GET STARTED
                             </a>
                         </li>
                     {% endif %}
@@ -90,16 +93,16 @@
     </nav>
 
     <!-- Main Content Area -->
-    <main class="container my-5 flex-grow-1">
+    <main class="container my-5 flex-grow-1 position-relative" style="z-index: 5;">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="row justify-content-center mb-4">
                     <div class="col-lg-8">
                         {% for category, message in messages %}
-                            <div class="alert alert-{{ category if category != 'danger' else 'danger' }} border-0 shadow-lg d-flex align-items-center justify-content-between p-3 rounded-4" role="alert">
+                            <div class="alert alert-{{ category if category != 'danger' else 'danger' }} border-0 shadow-lg d-flex align-items-center justify-content-between p-3 rounded-3" role="alert" style="background: rgba(13, 23, 48, 0.95); border: 1px solid rgba(56, 189, 248, 0.3) !important;">
                                 <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-info-circle-fill fs-5"></i>
-                                    <div>{{ message }}</div>
+                                    <i class="bi bi-diamond-fill text-info small"></i>
+                                    <div class="text-white">{{ message }}</div>
                                 </div>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
                             </div>
@@ -112,29 +115,29 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Glassmorphic Footer -->
-    <footer class="py-4 mt-auto border-top" style="border-color: rgba(255, 255, 255, 0.06) !important; background: rgba(8, 12, 20, 0.6);">
+    <!-- Crystallize Footer -->
+    <footer class="py-4 mt-auto border-top position-relative" style="z-index: 5; border-color: rgba(147, 197, 253, 0.08) !important; background: rgba(6, 10, 20, 0.85);">
         <div class="container text-center text-muted small">
-            <div class="d-flex flex-wrap justify-content-center gap-3 mb-2">
-                <span><i class="bi bi-cpu text-primary me-1"></i> Flask 3.0</span>
+            <div class="d-flex flex-wrap justify-content-center gap-3 mb-2 font-monospace" style="font-size: 0.76rem; letter-spacing: 0.05em;">
+                <span class="text-info">FLASK 3.0</span>
                 <span>&bull;</span>
-                <span><i class="bi bi-database text-info me-1"></i> PostgreSQL 15</span>
+                <span class="text-white">POSTGRESQL 15</span>
                 <span>&bull;</span>
-                <span><i class="bi bi-box-seam text-warning me-1"></i> Docker Multi-Stage</span>
+                <span class="text-info">DOCKER DIN-D</span>
                 <span>&bull;</span>
-                <span><i class="bi bi-diagram-3 text-danger me-1"></i> Jenkins CI/CD</span>
+                <span class="text-white">JENKINS CI/CD</span>
                 <span>&bull;</span>
-                <span><i class="bi bi-graph-up text-success me-1"></i> Prometheus & Grafana</span>
+                <span class="text-info">PROMETHEUS + GRAFANA</span>
             </div>
-            <div class="text-secondary" style="font-size: 0.78rem;">
-                CampusFix DevOps Platform &bull; Integrated Systems Demonstration &bull; All 7 Experiments Unified
+            <div class="text-secondary font-monospace" style="font-size: 0.72rem; letter-spacing: 0.1em;">
+                CAMPUSFIX ARCHITECTURE &bull; EXPERIMENTS 1 THROUGH 7 UNIFIED &bull; TOKYO PRISM EDITION
             </div>
         </div>
     </footer>
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- ReactBits Interactive Engine -->
+    <!-- Crystallize Tokyo Interactive Engine -->
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>

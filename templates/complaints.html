@@ -6,10 +6,13 @@
 <!-- Top Header & Live Stat Counters -->
 <div class="row align-items-center mb-4 g-3">
     <div class="col-lg-6">
-        <h2 class="fw-bold text-white mb-1 d-flex align-items-center gap-2">
-            <i class="bi bi-card-checklist text-primary"></i> Student Grievance Portal
+        <div class="d-inline-flex mb-2">
+            <span class="crystal-tag"><i class="bi bi-person-workspace"></i> RESIDENT PORTAL</span>
+        </div>
+        <h2 class="crystal-title fs-3 mb-1 d-flex align-items-center gap-2">
+            <i class="bi bi-card-checklist text-primary"></i> Campus Grievance Portal
         </h2>
-        <p class="text-secondary small mb-0">Submit new infrastructure complaints or track ongoing maintenance resolution.</p>
+        <p class="text-secondary small mb-0">Submit infrastructure breakdown reports or track live repair milestones across campus.</p>
     </div>
     
     <!-- Animated Stat Cards -->
@@ -17,20 +20,20 @@
         <div class="row g-2 justify-content-lg-end">
             <div class="col-4 col-sm-3">
                 <div class="spotlight-card p-3 text-center">
-                    <div class="text-secondary text-uppercase fw-bold" style="font-size: 0.68rem;">Total</div>
+                    <div class="text-secondary text-uppercase fw-bold font-monospace" style="font-size: 0.68rem; letter-spacing: 0.05em;">Total</div>
                     <div class="fs-4 fw-bold text-white counter-value" data-target="{{ complaints|length }}">{{ complaints|length }}</div>
                 </div>
             </div>
             <div class="col-4 col-sm-3">
                 <div class="spotlight-card p-3 text-center">
-                    <div class="text-danger text-uppercase fw-bold" style="font-size: 0.68rem;">Open</div>
+                    <div class="text-danger text-uppercase fw-bold font-monospace" style="font-size: 0.68rem; letter-spacing: 0.05em;">Open</div>
                     {% set open_count = complaints | selectattr("status", "equalto", "Open") | list | length %}
                     <div class="fs-4 fw-bold text-danger counter-value" data-target="{{ open_count }}">{{ open_count }}</div>
                 </div>
             </div>
             <div class="col-4 col-sm-3">
                 <div class="spotlight-card p-3 text-center">
-                    <div class="text-success text-uppercase fw-bold" style="font-size: 0.68rem;">Resolved</div>
+                    <div class="text-success text-uppercase fw-bold font-monospace" style="font-size: 0.68rem; letter-spacing: 0.05em;">Resolved</div>
                     {% set resolved_count = complaints | selectattr("status", "equalto", "Resolved") | list | length %}
                     <div class="fs-4 fw-bold text-success counter-value" data-target="{{ resolved_count }}">{{ resolved_count }}</div>
                 </div>
@@ -40,12 +43,15 @@
 </div>
 
 <div class="row g-4">
-    <!-- Complaint Submission Form (ReactBits Spotlight Card) -->
+    <!-- Complaint Submission Form -->
     <div class="col-lg-4">
         <div class="spotlight-card p-4">
-            <h5 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
-                <i class="bi bi-pencil-square text-primary"></i> Report New Issue
-            </h5>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h5 class="fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                    <i class="bi bi-pencil-square text-info"></i> Report New Issue
+                </h5>
+                <span class="badge bg-primary bg-opacity-25 text-info border border-info border-opacity-25 font-monospace" style="font-size: 0.7rem;">TICKET DISPATCH</span>
+            </div>
 
             <form method="POST" action="{{ url_for('complaints') }}">
                 <div class="mb-3">
@@ -69,7 +75,7 @@
                     <textarea name="description" class="form-control" rows="4" placeholder="Detail the exact room number, floor, and nature of breakdown..." required></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-glow-primary w-100 py-3">
+                <button type="submit" class="btn btn-crystal-primary w-100 py-3">
                     <i class="bi bi-send-check me-1"></i> Submit Complaint
                 </button>
             </form>
@@ -83,15 +89,15 @@
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                 <div class="d-flex flex-wrap align-items-center gap-2">
                     <span class="filter-pill active" data-filter="all">All ({{ complaints|length }})</span>
-                    <span class="filter-pill" data-filter="open">Open</span>
+                    <span class="filter-pill" data-filter="open">Open ({{ open_count }})</span>
                     <span class="filter-pill" data-filter="in progress">In Progress</span>
-                    <span class="filter-pill" data-filter="resolved">Resolved</span>
+                    <span class="filter-pill" data-filter="resolved">Resolved ({{ resolved_count }})</span>
                 </div>
 
                 <!-- Instant Search Input -->
                 <div class="position-relative" style="min-width: 220px;">
-                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                    <input type="text" id="tableSearch" class="form-control ps-5 py-2" placeholder="Instant search..." style="font-size: 0.88rem;">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary"></i>
+                    <input type="text" id="tableSearch" class="form-control ps-5 py-2" placeholder="Instant search tickets..." style="font-size: 0.88rem;">
                 </div>
             </div>
 
@@ -111,7 +117,7 @@
                         {% if complaints %}
                             {% for c in complaints %}
                             <tr class="data-row" data-status="{{ c.status|lower }}" data-category="{{ c.category|lower }}">
-                                <td class="font-monospace text-muted">#{{ c.id }}</td>
+                                <td class="font-monospace text-secondary">#{{ c.id }}</td>
                                 <td>
                                     <div class="fw-semibold text-white">{{ c.title }}</div>
                                     <div class="text-secondary small text-truncate" style="max-width: 280px;">{{ c.description }}</div>
@@ -122,26 +128,26 @@
                                 <td>
                                     {% if c.status == 'Open' %}
                                         <span class="badge-status badge-status-open">
-                                            <span style="width: 6px; height: 6px; background-color: #f43f5e; border-radius: 50%;"></span> Open
+                                            <span style="width: 6px; height: 6px; background-color: #fb7185; border-radius: 50%;"></span> Open
                                         </span>
                                     {% elif c.status == 'In Progress' %}
                                         <span class="badge-status badge-status-progress">
-                                            <span style="width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%;"></span> In Progress
+                                            <span style="width: 6px; height: 6px; background-color: #fbbf24; border-radius: 50%;"></span> In Progress
                                         </span>
                                     {% else %}
                                         <span class="badge-status badge-status-resolved">
-                                            <span style="width: 6px; height: 6px; background-color: #10b981; border-radius: 50%;"></span> Resolved
+                                            <span style="width: 6px; height: 6px; background-color: #34d399; border-radius: 50%;"></span> Resolved
                                         </span>
                                     {% endif %}
                                 </td>
-                                <td class="text-muted small font-monospace">
+                                <td class="text-secondary small font-monospace">
                                     {{ c.created_at.strftime('%Y-%m-%d %H:%M') }}
                                 </td>
                             </tr>
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="5" class="text-center py-5 text-muted">
+                                <td colspan="5" class="text-center py-5 text-secondary">
                                     <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
                                     No complaints filed yet. Submit your first complaint using the form on the left!
                                 </td>

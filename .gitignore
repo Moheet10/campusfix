@@ -9,3 +9,6 @@ instance/
 .env
 zip/
 *.zip
+
+grafana-data/
+custom-grafana.ini
