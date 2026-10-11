@@ -1,80 +1,170 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard - CampusFix{% endblock %}
+{% block title %}Administrator Dashboard &bull; CampusFix{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- Top Header & Metrics Bar -->
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
     <div>
-        <h2 class="fw-bold mb-1">🛠️ Administrator Dashboard</h2>
-        <p class="text-muted mb-0">Review complaints, assign resources, and update complaint status across campus.</p>
+        <h2 class="fw-bold text-white mb-1 d-flex align-items-center gap-2">
+            <i class="bi bi-shield-check text-primary"></i> Administrator Dashboard
+        </h2>
+        <p class="text-secondary small mb-0">Campus-wide grievance management, assignment, and status resolution.</p>
     </div>
-    <div class="d-flex gap-2">
-        <a href="/api/stats" target="_blank" class="btn btn-outline-primary btn-sm">JSON Stats</a>
-        <a href="/metrics" target="_blank" class="btn btn-outline-warning btn-sm text-dark">Prometheus Metrics</a>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="/api/stats" target="_blank" class="btn btn-outline-info btn-sm rounded-pill px-3">
+            <i class="bi bi-filetype-json me-1"></i> JSON Stats
+        </a>
+        <a href="/metrics" target="_blank" class="btn btn-outline-warning btn-sm rounded-pill px-3">
+            <i class="bi bi-graph-up-arrow me-1"></i> Prometheus Metrics
+        </a>
+        <a href="/health" target="_blank" class="btn btn-outline-success btn-sm rounded-pill px-3">
+            <i class="bi bi-heart-pulse me-1"></i> Health Probe
+        </a>
     </div>
 </div>
 
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 fw-bold">All Campus Grievances</h5>
-        <span class="badge bg-primary">{{ complaints|length }} Submissions</span>
+<!-- 4 Animated Stats Cards (ReactBits Spotlight Grid) -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="spotlight-card p-3 p-md-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-secondary text-uppercase fw-bold small">Total Grievances</span>
+                <i class="bi bi-folder-check text-primary fs-5"></i>
+            </div>
+            <div class="fs-2 fw-extrabold text-white counter-value" data-target="{{ complaints|length }}">{{ complaints|length }}</div>
+            <small class="text-muted" style="font-size: 0.75rem;">All campus records</small>
+        </div>
     </div>
-    <div class="card-body p-0">
-        {% if complaints %}
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Submitted By</th>
-                            <th>Category</th>
-                            <th>Issue Details</th>
-                            <th>Date</th>
-                            <th>Current Status</th>
-                            <th>Change Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for c in complaints %}
-                        <tr>
-                            <td><strong>#{{ c.id }}</strong></td>
-                            <td><span class="badge bg-secondary">{{ c.author.username }}</span></td>
-                            <td><span class="badge bg-light text-dark border">{{ c.category }}</span></td>
-                            <td>
-                                <strong class="d-block">{{ c.title }}</strong>
-                                <small class="text-muted">{{ c.description }}</small>
-                            </td>
-                            <td class="small text-muted">{{ c.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-                            <td>
-                                {% if c.status == 'Open' %}
-                                    <span class="badge bg-danger">Open</span>
-                                {% elif c.status == 'In Progress' %}
-                                    <span class="badge bg-warning text-dark">In Progress</span>
-                                {% else %}
-                                    <span class="badge bg-success">Resolved</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <form method="POST" action="{{ url_for('admin_dashboard') }}" class="d-flex gap-1">
-                                    <input type="hidden" name="complaint_id" value="{{ c.id }}">
-                                    <select name="status" class="form-select form-select-sm" style="width: 130px;">
-                                        <option value="Open" {% if c.status == 'Open' %}selected{% endif %}>Open</option>
-                                        <option value="In Progress" {% if c.status == 'In Progress' %}selected{% endif %}>In Progress</option>
-                                        <option value="Resolved" {% if c.status == 'Resolved' %}selected{% endif %}>Resolved</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+    <div class="col-sm-6 col-lg-3">
+        <div class="spotlight-card p-3 p-md-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-danger text-uppercase fw-bold small">Open Issues</span>
+                <i class="bi bi-exclamation-triangle text-danger fs-5"></i>
             </div>
-        {% else %}
-            <div class="p-5 text-center text-muted">
-                <p class="mb-0">No complaints reported yet.</p>
+            {% set open_count = complaints | selectattr("status", "equalto", "Open") | list | length %}
+            <div class="fs-2 fw-extrabold text-danger counter-value" data-target="{{ open_count }}">{{ open_count }}</div>
+            <small class="text-muted" style="font-size: 0.75rem;">Awaiting staff action</small>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="spotlight-card p-3 p-md-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-warning text-uppercase fw-bold small">In Progress</span>
+                <i class="bi bi-clock-history text-warning fs-5"></i>
             </div>
-        {% endif %}
+            {% set prog_count = complaints | selectattr("status", "equalto", "In Progress") | list | length %}
+            <div class="fs-2 fw-extrabold text-warning counter-value" data-target="{{ prog_count }}">{{ prog_count }}</div>
+            <small class="text-muted" style="font-size: 0.75rem;">Actively being repaired</small>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="spotlight-card p-3 p-md-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-success text-uppercase fw-bold small">Resolved</span>
+                <i class="bi bi-check-circle text-success fs-5"></i>
+            </div>
+            {% set res_count = complaints | selectattr("status", "equalto", "Resolved") | list | length %}
+            <div class="fs-2 fw-extrabold text-success counter-value" data-target="{{ res_count }}">{{ res_count }}</div>
+            <small class="text-muted" style="font-size: 0.75rem;">Confirmed closed</small>
+        </div>
+    </div>
+</div>
+
+<!-- Main Admin Control Table Card -->
+<div class="spotlight-card p-4">
+    <!-- Filter & Search Toolbar -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="filter-pill active" data-filter="all">All ({{ complaints|length }})</span>
+            <span class="filter-pill" data-filter="open">Open ({{ open_count }})</span>
+            <span class="filter-pill" data-filter="in progress">In Progress ({{ prog_count }})</span>
+            <span class="filter-pill" data-filter="resolved">Resolved ({{ res_count }})</span>
+        </div>
+
+        <!-- Instant Search Box -->
+        <div class="position-relative" style="min-width: 250px;">
+            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+            <input type="text" id="tableSearch" class="form-control ps-5 py-2" placeholder="Search student, title, category..." style="font-size: 0.88rem;">
+        </div>
+    </div>
+
+    <!-- Responsive Table -->
+    <div class="table-responsive">
+        <table class="table custom-table align-middle">
+            <thead>
+                <tr>
+                    <th style="width: 70px;">ID</th>
+                    <th>Student</th>
+                    <th>Category</th>
+                    <th>Issue Summary</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th style="min-width: 200px;">Change Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if complaints %}
+                    {% for c in complaints %}
+                    <tr class="data-row" data-status="{{ c.status|lower }}" data-category="{{ c.category|lower }}">
+                        <td class="font-monospace text-muted">#{{ c.id }}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-secondary bg-opacity-25 text-white border border-secondary border-opacity-25 px-2 py-1">
+                                    <i class="bi bi-person me-1"></i>{{ c.author.username }}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge-category">{{ c.category }}</span>
+                        </td>
+                        <td>
+                            <strong class="text-white d-block">{{ c.title }}</strong>
+                            <small class="text-secondary text-truncate d-block" style="max-width: 320px;">{{ c.description }}</small>
+                        </td>
+                        <td class="text-muted small font-monospace">
+                            {{ c.created_at.strftime('%Y-%m-%d %H:%M') }}
+                        </td>
+                        <td>
+                            {% if c.status == 'Open' %}
+                                <span class="badge-status badge-status-open">
+                                    <span style="width: 6px; height: 6px; background-color: #f43f5e; border-radius: 50%;"></span> Open
+                                </span>
+                            {% elif c.status == 'In Progress' %}
+                                <span class="badge-status badge-status-progress">
+                                    <span style="width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%;"></span> In Progress
+                                </span>
+                            {% else %}
+                                <span class="badge-status badge-status-resolved">
+                                    <span style="width: 6px; height: 6px; background-color: #10b981; border-radius: 50%;"></span> Resolved
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ url_for('admin_dashboard') }}" class="d-flex gap-2">
+                                <input type="hidden" name="complaint_id" value="{{ c.id }}">
+                                <select name="status" class="form-select form-select-sm py-1" style="font-size: 0.85rem;">
+                                    <option value="Open" {% if c.status == 'Open' %}selected{% endif %}>Open</option>
+                                    <option value="In Progress" {% if c.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                                    <option value="Resolved" {% if c.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-glow-primary px-3 text-nowrap">
+                                    <i class="bi bi-arrow-repeat me-1"></i> Update
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
+                            No campus grievances registered yet.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

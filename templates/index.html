@@ -1,54 +1,184 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row align-items-center py-5">
+<div class="row align-items-center py-4 py-lg-5 g-5">
+    <!-- Hero Left Column -->
     <div class="col-lg-7">
-        <h1 class="display-4 fw-bold text-primary mb-3">CampusFix</h1>
-        <p class="lead text-secondary">
-            A centralized digital grievance and facility issue reporting system for college campuses.
-            Report issues in labs, hostels, mess, or classrooms and track real-time resolution status.
-        </p>
-        <div class="d-flex gap-3 mt-4">
-            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg px-4">Sign In</a>
-            <a href="{{ url_for('register') }}" class="btn btn-outline-secondary btn-lg px-4">Create Account</a>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.25);">
+            <span class="ping-dot" style="width: 6px; height: 6px; background-color: #818cf8; border-radius: 50%;"></span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: #a5b4fc;">DevOps College Project &bull; Experiments 1–7</span>
         </div>
-        <div class="mt-4 p-3 bg-white border rounded shadow-sm">
-            <h6 class="text-uppercase text-muted fw-bold mb-2">Demo Credentials:</h6>
-            <div class="row">
+
+        <h1 class="display-4 fw-extrabold gradient-heading mb-3" style="letter-spacing: -1.5px; font-weight: 800;">
+            Next-Gen Campus Grievance <span class="hero-highlight">Resolution</span>
+        </h1>
+        
+        <p class="lead text-secondary mb-4" style="font-size: 1.15rem; line-height: 1.7;">
+            CampusFix unifies campus infrastructure reporting with automated continuous delivery. 
+            Students submit issues in labs, hostels, and classrooms; administrators track resolution through live telemetry.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="d-flex flex-wrap gap-3 mb-5">
+            <a href="{{ url_for('login') }}" class="btn btn-glow-primary px-4 py-3">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Launch Application
+            </a>
+            <a href="{{ url_for('register') }}" class="btn btn-glow-secondary px-4 py-3">
+                <i class="bi bi-person-plus me-2"></i> Register Account
+            </a>
+            <a href="https://github.com/Moheet10/campusfix" target="_blank" class="btn btn-glow-secondary px-3 py-3" title="GitHub Repository">
+                <i class="bi bi-github"></i>
+            </a>
+        </div>
+
+        <!-- Quick Demo Credentials Card (ReactBits Spotlight) -->
+        <div class="spotlight-card p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="text-uppercase text-muted fw-bold small" style="letter-spacing: 0.08em;">
+                    <i class="bi bi-key-fill text-warning me-1"></i> Pre-Seeded Demo Access
+                </div>
+                <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 px-2 py-1" style="font-size: 0.72rem;">
+                    Instant Testing
+                </span>
+            </div>
+            <div class="row g-3">
                 <div class="col-sm-6">
-                    <strong>Admin Account:</strong><br>
-                    Username: <code>admin</code><br>
-                    Password: <code>admin123</code>
+                    <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <strong class="text-white small">Faculty Admin</strong>
+                            <span class="badge bg-danger bg-opacity-25 text-danger" style="font-size: 0.65rem;">ADMIN</span>
+                        </div>
+                        <div class="text-secondary small font-monospace">
+                            User: <span class="text-info">admin</span><br>
+                            Pass: <span class="text-info">admin123</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-6">
-                    <strong>Student Account:</strong><br>
-                    Username: <code>student1</code><br>
-                    Password: <code>password123</code>
+                    <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <strong class="text-white small">Hostel Student</strong>
+                            <span class="badge bg-success bg-opacity-25 text-success" style="font-size: 0.65rem;">STUDENT</span>
+                        </div>
+                        <div class="text-secondary small font-monospace">
+                            User: <span class="text-info">student1</span><br>
+                            Pass: <span class="text-info">password123</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-5 text-center mt-4 mt-lg-0">
-        <div class="card shadow-sm border-0 p-4 bg-white">
-            <h4 class="fw-bold mb-3">DevOps Pipeline Active</h4>
-            <ul class="list-group list-group-flush text-start">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Docker Container
-                    <span class="badge bg-success rounded-pill">Active</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    PostgreSQL Database
-                    <span class="badge bg-success rounded-pill">Connected</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Health Endpoint (/health)
-                    <span class="badge bg-info rounded-pill">200 OK</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Prometheus Metrics (/metrics)
-                    <span class="badge bg-warning text-dark rounded-pill">Scraping</span>
-                </li>
-            </ul>
+
+    <!-- Right Column: Live DevOps Pipeline Status (ReactBits Tilt Card) -->
+    <div class="col-lg-5">
+        <div class="spotlight-card tilt-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0 text-white d-flex align-items-center gap-2">
+                    <i class="bi bi-terminal text-primary"></i> DevOps Pipeline Status
+                </h5>
+                <span class="live-indicator"><span class="ping-dot"></span> LIVE</span>
+            </div>
+
+            <!-- Pipeline Stack Modules -->
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(99, 102, 241, 0.15); color: #818cf8;">
+                            <i class="bi bi-box"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-white">Docker Multi-Stage</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">Stage 3 Non-Root Runner</div>
+                        </div>
+                    </div>
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">ACTIVE</span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(6, 182, 212, 0.15); color: #22d3ee;">
+                            <i class="bi bi-database"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-white">PostgreSQL 15</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">Persistent Volume Storage</div>
+                        </div>
+                    </div>
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">CONNECTED</span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-white">11 Automated Pytests</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">JUnit XML Export for CI</div>
+                        </div>
+                    </div>
+                    <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25">100% PASS</span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                            <i class="bi bi-activity"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-white">Prometheus & Grafana</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">Scraping 5s interval</div>
+                        </div>
+                    </div>
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">MONITORING</span>
+                </div>
+            </div>
+
+            <!-- Health Telemetry Direct Link -->
+            <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center" style="border-color: rgba(255, 255, 255, 0.08) !important;">
+                <span class="text-muted small">Endpoint Liveness Probe</span>
+                <a href="/health" target="_blank" class="btn btn-outline-info btn-sm rounded-pill px-3">
+                    Verify /health <i class="bi bi-arrow-up-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Feature Pillars Row (ReactBits 3-Card Grid) -->
+<div class="row g-4 mt-2">
+    <div class="col-md-4">
+        <div class="spotlight-card p-4 h-100">
+            <div class="rounded-3 d-inline-flex p-3 mb-3" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">
+                <i class="bi bi-shield-lock fs-4"></i>
+            </div>
+            <h5 class="fw-bold text-white mb-2">Hardened Security</h5>
+            <p class="text-secondary small mb-0">
+                PBKDF2/SHA-256 salted password hashing via Werkzeug, protected role authorization, and non-root Linux container execution.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="spotlight-card p-4 h-100">
+            <div class="rounded-3 d-inline-flex p-3 mb-3" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">
+                <i class="bi bi-arrow-repeat fs-4"></i>
+            </div>
+            <h5 class="fw-bold text-white mb-2">Automated CI/CD</h5>
+            <p class="text-secondary small mb-0">
+                Declarative Jenkinsfile pipeline with automated test container builds, JUnit telemetry reporting, and zero-downtime container rollout.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="spotlight-card p-4 h-100">
+            <div class="rounded-3 d-inline-flex p-3 mb-3" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                <i class="bi bi-speedometer2 fs-4"></i>
+            </div>
+            <h5 class="fw-bold text-white mb-2">Live Observability</h5>
+            <p class="text-secondary small mb-0">
+                Prometheus exporter tracking HTTP request latencies and custom grievance counters alongside Node Exporter CPU/RAM gauges.
+            </p>
         </div>
     </div>
 </div>
