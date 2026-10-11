@@ -1,0 +1,37 @@
+# ==============================================================================
+# CampusFix - Local Docker Compose Development Override
+# Authored by: Ronak Duseja (Person 2 - DevOps & Infrastructure Automation)
+# ==============================================================================
+# Usage:
+#   Copy this file to docker-compose.override.yml to enable local live reloading,
+#   debug logs, and volume mount overrides without altering production configuration.
+#
+#   cp docker-compose.override.yml.example docker-compose.override.yml
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  web:
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ./app.py:/app/app.py:ro
+      - ./templates:/app/templates:ro
+      - ./static:/app/static:ro
+    ports:
+      - "5000:5000"
+
+  prometheus:
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  grafana:
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_USERS_ALLOW_SIGN_UP=false
