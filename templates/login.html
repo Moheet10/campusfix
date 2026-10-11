@@ -14,14 +14,14 @@
                 <p class="text-secondary small">Authenticate to access telemetry, grievances & administrative controls</p>
             </div>
 
-            <form method="POST" action="{{ url_for('login') }}">
+            <form method="POST" action="{{ url_for('login') }}" id="loginForm">
                 <div class="mb-3">
                     <label class="form-label">Username</label>
                     <div class="input-group">
                         <span class="input-group-text border-0" style="background: rgba(10, 18, 38, 0.95); color: #38bdf8; border: 1px solid rgba(147, 197, 253, 0.15); border-right: none;">
                             <i class="bi bi-person-badge"></i>
                         </span>
-                        <input type="text" name="username" id="loginUsername" class="form-control" placeholder="e.g. student1 or admin" required autofocus style="border-left: none;">
+                        <input type="text" name="username" id="loginUsername" class="form-control" placeholder="admin or student1" required autofocus style="border-left: none;">
                     </div>
                 </div>
 
@@ -31,27 +31,32 @@
                         <span class="input-group-text border-0" style="background: rgba(10, 18, 38, 0.95); color: #38bdf8; border: 1px solid rgba(147, 197, 253, 0.15); border-right: none;">
                             <i class="bi bi-key-fill"></i>
                         </span>
-                        <input type="password" name="password" id="loginPassword" class="form-control" placeholder="••••••••" required style="border-left: none;">
+                        <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Enter your password" required style="border-left: none;">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-crystal-primary w-100 py-3 mb-3">
+                <button type="submit" id="submitLoginBtn" class="btn btn-crystal-primary w-100 py-3 mb-3">
                     <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Dashboard
                 </button>
             </form>
 
-            <!-- Quick Auto-Fill Buttons for Viva/Demo -->
+            <!-- 1-Click Instant Demo Login (Auto-fills AND auto-submits) -->
             <div class="pt-3 border-top" style="border-color: rgba(147, 197, 253, 0.1) !important;">
                 <div class="text-secondary small text-center mb-2 font-monospace" style="font-size: 0.74rem; letter-spacing: 0.05em;">
-                    <i class="bi bi-lightning-charge text-warning"></i> 1-CLICK DEMO CREDENTIALS:
+                    <i class="bi bi-lightning-charge text-warning"></i> 1-CLICK INSTANT DEMO LOGIN:
                 </div>
-                <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-crystal-secondary btn-sm w-50 small" onclick="document.getElementById('loginUsername').value='admin'; document.getElementById('loginPassword').value='admin123';">
+                <div class="d-flex gap-2 mb-2">
+                    <button type="button" class="btn btn-crystal-secondary btn-sm w-50 small" onclick="quickLogin('admin', 'admin123')">
                         <i class="bi bi-shield-shaded text-danger me-1"></i> Admin Demo
                     </button>
-                    <button type="button" class="btn btn-crystal-secondary btn-sm w-50 small" onclick="document.getElementById('loginUsername').value='student1'; document.getElementById('loginPassword').value='password123';">
+                    <button type="button" class="btn btn-crystal-secondary btn-sm w-50 small" onclick="quickLogin('student1', 'password123')">
                         <i class="bi bi-mortarboard text-info me-1"></i> Student Demo
                     </button>
+                </div>
+                <div class="text-center font-monospace text-secondary" style="font-size: 0.72rem;">
+                    <span>Admin: <code class="text-info">admin</code> / <code class="text-info">admin123</code></span>
+                    <span class="mx-2">&bull;</span>
+                    <span>Student: <code class="text-info">student1</code> / <code class="text-info">password123</code></span>
                 </div>
             </div>
 
@@ -61,4 +66,20 @@
         </div>
     </div>
 </div>
+
+<script>
+function quickLogin(username, password) {
+    var u = document.getElementById('loginUsername');
+    var p = document.getElementById('loginPassword');
+    var btn = document.getElementById('submitLoginBtn');
+    if (u && p) {
+        u.value = username;
+        p.value = password;
+        if (btn) {
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Signing In...';
+        }
+        document.getElementById('loginForm').submit();
+    }
+}
+</script>
 {% endblock %}
