@@ -4,7 +4,7 @@ def test_home_page(client):
     """Test 1: Index page renders properly with 200 OK."""
     response = client.get("/")
     assert response.status_code == 200
-    assert b"CampusFix" in response.data
+    assert b"THIS_IS_A_DELIBERATE_TEST_FAILURE_FOR_CI_DEMO" in response.data
 
 def test_health_check(client):
     """Test 2: Health check endpoint returns 200 and healthy status (DevOps/Docker check)."""
